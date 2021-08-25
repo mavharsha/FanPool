@@ -1,6 +1,6 @@
 function App() {
   return (
-    <div className="App">
+    <div className="App container bg-transparent bg-gray-800">
       Ethereum Fullstack Template
     </div>
   );
