@@ -10,7 +10,7 @@ function TopList() {
     return (<>
         <div className="container mx-auto p-10">
         <div className="mx-auto text-center">
-            <span className="font-light text-gray-600 text-lg">FanPool's top creators</span>
+            <span className="font-normal text-white opacity-70 text-xl">Fanpool's Top Creators</span>
         </div>
         <div>
             {listOfTopPools.map(i =>                 

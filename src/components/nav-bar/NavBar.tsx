@@ -1,36 +1,40 @@
+import { useState } from "react";
 import Logo from "../logo";
+import WalletButton from "../wallet-button";
 
-function NavBar() {
+interface Props {
+	selectedItem: string;
+	setSelectedItem: (value: string) => void;
+}
+
+
+function NavBar(props: Props) {
+	const activeItem = "py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold";
+	const inActiveItem = "py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300";
+
     return(
         <>
-        	<nav className="bg-white shadow-lg">
+        	<nav className="bg-white shadow-lg rounded-b-md">
 			<div className="max-w-6xl mx-auto px-4">
 				<div className="flex justify-between">
 					<div className="flex space-x-7">
 						<div>
 							<a href="/" className="flex items-center py-4 px-2">
 								<Logo/>
-								<span className="font-semibold text-gray-500 text-lg">FanPool</span>
+								<span className="font-semibold text-gray-500 text-2xl mr-2">FanPool</span>
+								<Logo/>
 							</a>
 						</div>
-						<div className="hidden md:flex items-center space-x-1">
-							<a href="/" className="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold ">Home</a>
-							<a href="/" className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Creators</a>
-							<a href="/" className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Pools</a>
-							<a href="/" className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Blog</a>
-						</div>
+
 					</div>
 					<div className="hidden md:flex items-center space-x-3 ">
-						<button className="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300">Connect Wallet</button>
+						<WalletButton />
 					</div>
 					<div className="md:hidden flex items-center">
 						<button className="outline-none mobile-menu-button">
 						<svg className=" w-6 h-6 text-gray-500 hover:text-green-500 "
 							x-show="!showMenu"
 							fill="none"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
 						>
