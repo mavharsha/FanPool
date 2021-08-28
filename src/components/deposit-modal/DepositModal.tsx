@@ -1,4 +1,5 @@
 import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 interface Props {
   creator: string;
@@ -7,10 +8,15 @@ interface Props {
 
 function DepositModal(props: Props) {
 
+  const depositSchema = yup.object().shape({
+    deposit: yup.number().required('Required').positive('Only positive numbers'),
+  });
+
   const formik = useFormik({
     initialValues: {
       deposit: '',
     },
+    validationSchema: depositSchema,
     onSubmit: values => {
       alert(JSON.stringify(values, null, 2));
       // handle on depositing to smart contract here
@@ -33,10 +39,10 @@ function DepositModal(props: Props) {
                 <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
                   Deposit eth to {props.creator}
                 </h3>
-                  <form className="mt-8 space-y-6" onSubmit={formik.handleSubmit}>
+                  <form className="mt-8 p-2 space-y-6" onSubmit={formik.handleSubmit}>
                     <div className="rounded-md shadow-sm -space-y-px">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Quantity</label>
+                        <label className="block text-sm font-medium text-gray-700">Quantity in eth. {formik.errors.deposit}</label>
                         <input id="deposit" name="deposit" type="text" onChange={formik.handleChange} value={formik.values.deposit} className="appearance-none relative block w-full mt-2 mb-2 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm" placeholder="Eth quantity" />
                       </div>
                     </div>
@@ -47,7 +53,7 @@ function DepositModal(props: Props) {
             </div>
           </div>
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-            <button type="button" onClick={() => formik.handleSubmit()} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-500 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+            <button type="button" onClick={() => formik.handleSubmit()} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
               Deposit
             </button>
             <button type="button" onClick={props.onDismiss} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">

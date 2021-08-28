@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Logo from "../logo";
 import WalletButton from "../wallet-button";
 
@@ -9,8 +8,10 @@ interface Props {
 
 
 function NavBar(props: Props) {
+	/* 
 	const activeItem = "py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold";
 	const inActiveItem = "py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300";
+	*/
 
     return(
         <>

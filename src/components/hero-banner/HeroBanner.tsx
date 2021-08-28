@@ -14,14 +14,14 @@ function HeroBanner(props: Props) {
     </h2>
     <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
       <div className="inline-flex rounded-md shadow">
-        <a href="#" className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-900">
+        <button className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-900">
             OnBoard to FanPool
-        </a>
+        </button>
       </div>
       <div className="ml-3 inline-flex rounded-md shadow">
-        <a href="#" className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-gray-200 hover:bg-grey-700">
+        <button className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-gray-200 hover:bg-grey-700">
           Creator Pools
-        </a>
+        </button>
       </div>
     </div>
   </div>
