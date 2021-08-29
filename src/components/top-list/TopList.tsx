@@ -10,12 +10,11 @@ interface Props {
 }
 
 function TopList(props: Props) {
-    const [topPools, setTopPools] = useState<{creatorName: string, creatorAddress: string, poolValue: string}[]>([]);
+    const [topPools, setTopPools] = useState<Pool[]>([]);
 
     useEffect(() => {
-        setTopPools(props.creatorPools ? props.creatorPools.sort((a: any, b: any) => (a.poolValue > b.poolValue) ? -1 : 1).slice(0, 3) : []);
+        setTopPools(props.creatorPools ? props.creatorPools.sort((a: any, b: any) => (a.poolValue > b.poolValue) ? -1 : -1).slice(0, 3) : []);
     }, [props.account, props.creatorPools])
-
 
     return (<>
        { 
@@ -33,7 +32,8 @@ function TopList(props: Props) {
                                       poolValue={i.poolValue} 
                                       creatorAddress={i.creatorAddress} 
                                       withdrawable={props.commonPools.includes(i.creatorAddress)}
-                                      depositable={props.account !== i.creatorAddress}/>
+                                      depositable={props.account !== i.creatorAddress}
+                                      maxFanCanWithdraw={i.maxWithdrawableForFan} />
 
                 </div>)
             }

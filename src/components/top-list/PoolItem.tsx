@@ -9,6 +9,7 @@ interface PoolItemProps {
     currentAddress: string
     withdrawable: boolean;
     depositable: boolean;
+    maxFanCanWithdraw: string;
 }
 
 function PoolItem(props: PoolItemProps) {
@@ -45,7 +46,7 @@ function PoolItem(props: PoolItemProps) {
         && <DepositModal creator={props.creatorName} onDismiss={() =>{ setSelectedPool(''); setModalType('')}}creatorAddress={props.creatorAddress}/>}
         {selectedPool === props.creatorName 
         && modalType === 'withdraw'
-        && <WithdrawModal creator={props.creatorName} onDismiss={() => { setSelectedPool(''); setModalType('')}} creatorAddress={props.creatorAddress}/>}
+        && <WithdrawModal creator={props.creatorName} onDismiss={() => { setSelectedPool(''); setModalType('')}} creatorAddress={props.creatorAddress} maxFanCanWithdraw={props.maxFanCanWithdraw}/>}
 
         </div>
     );

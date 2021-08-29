@@ -12,13 +12,14 @@ import { useEffect } from 'react';
 interface Props {
   creator: string;
   creatorAddress: string;
-  onDismiss: () => void
+  onDismiss: () => void;
+  maxFanCanWithdraw: string;
 }
 
 function WithdrawModal(props: Props) {
     const { account } = useEthers();
     const [accountType, setAccountType] = useState('Fan');
-    //const [recievedReceipt, setRecievedReceipt] = useState<any>({});
+    const [recievedReceipt, setRecievedReceipt] = useState<any>({});
   const [loading, setLoading] = useState(false);
 
   const withDrawSchema = yup.object().shape({
@@ -39,31 +40,16 @@ function WithdrawModal(props: Props) {
       const withDrawEth = async () => {
         if (typeof window?.ethereum != undefined) {  
           const fanpoolContract: Contract = getContract(address, fanPool);
-          let overrides = {
-            // To convert Ether to Wei:
-            value: ethers.utils.parseEther(values.withdraw)     // ether in this case MUST be a string
-        
-            // Or you can use Wei directly if you have that:
-            // value: someBigNumber
-            // value: 1234   // Note that using JavaScript numbers requires they are less than Number.MAX_SAFE_INTEGER
-            // value: "1234567890"
-            // value: "0x1234"
-        
-            // Or, promises are also supported:
-            // value: provider.getBalance(addr)
-        };
-
 
           try {
-            console.log('creator', props.creatorAddress, overrides, fanpoolContract)
-            console.log('compound', compoundAddress, overrides)
-            console.log(overrides)
+            console.log('creator', props.creatorAddress, fanpoolContract)
+            console.log('compound', compoundAddress)
             setLoading((state) => !state);
             // Sree // Need some time to fix this.
-            //let transaction = await fanpoolContract.deposit(props.creatorAddress, compoundAddress, overrides);
-            // withdraw()
-            //let receipt = await transaction.wait();
-            //setRecievedReceipt(() => receipt);
+            let transaction = await fanpoolContract.withdraw(props.creatorAddress, ethers.utils.parseEther(values.withdraw), compoundAddress);
+            let receipt = await transaction.wait();
+            setRecievedReceipt(() => receipt);
+            console.log(recievedReceipt)
             setTimeout(() => {setLoading((state) => !state);}, 50000)
           } catch (err){
             console.log(err);
@@ -86,7 +72,7 @@ function WithdrawModal(props: Props) {
             <div className="sm:flex sm:items-start">
               <div className="mt-3 text-center  sm:mt-0 sm:ml-4 sm:text-left">
                 <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                    {accountType === 'Fan' ? `Withdrawing your eth from ${props.creator}'s pool` : `Withdrawing yeild for your pool`}
+                    {accountType === 'Fan' ? `Withdrawing your eth from ${props.creator}'s pool: Max: ${props.maxFanCanWithdraw}` : `Withdrawing yeild for your pool`}
                 </h3>
                   {!loading && 
                     <form className="mt-8 p-2 space-y-6" onSubmit={formik.handleSubmit}>

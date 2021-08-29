@@ -11,7 +11,7 @@ interface Props {
 }
 
 function CreatorList(props: Props) {
-  const [creators, setCreators] = useState<{ creatorName: string, creatorAddress: string, poolValue: string }[]>([]);
+  const [creators, setCreators] = useState<Pool[]>([]);
 
   useEffect(() => {
     setCreators(props.creatorPools)
@@ -33,7 +33,8 @@ function CreatorList(props: Props) {
                       poolValue={i.poolValue}
                       creatorAddress={i.creatorAddress}
                       withdrawable={props.commonPools.includes(i.creatorAddress.toUpperCase())}
-                      depositable={props.account.toLocaleUpperCase() !== i.creatorAddress.toUpperCase()} />
+                      depositable={props.account.toLocaleUpperCase() !== i.creatorAddress.toUpperCase()}
+                      maxFanCanWithdraw={i.maxWithdrawableForFan} />
 
                   </div>)
                 }

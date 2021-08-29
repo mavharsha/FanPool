@@ -37,7 +37,8 @@ function Profile(props: Props) {
                                             poolValue={i.poolValue} 
                                             creatorAddress={i.creatorAddress} 
                                             withdrawable={true}
-                                            depositable={true}/>
+                                            depositable={true}
+                                            maxFanCanWithdraw={i.maxWithdrawableForFan} />
 
                         </div>)
                     }

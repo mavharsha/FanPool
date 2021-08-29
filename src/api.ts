@@ -12,7 +12,7 @@ export const fetchAllPools = async () => {
         const listOfPromisses = listOfAllPools.map((creatorAddress) => fanpoolContract.getPoolByCreator(creatorAddress));
         const poolData = await Promise.all(listOfPromisses)
         console.log(poolData)
-        return poolData.map((e) => { return { creatorName: e.name, poolValue: `${BigNumber.from(e.totalDeposits).add(e.totalYieldPaid).toString()} gwei`, creatorAddress: e.cAddress } })
+        return poolData.map((e) => { return { creatorName: e.name, poolValue: `${BigNumber.from(e.totalDeposits).add(e.totalYieldPaid).toString()}`, creatorAddress: e.cAddress, maxWithdrawableForFan: e.maxWithdrawalAvailable } })
       }
       catch (err) {
         console.log(err);
@@ -29,7 +29,7 @@ export const fetchSubscribedPools = async () => {
       const listOfPromisses = subPools.map((creatorAddress) => fanpoolContract.getPoolByCreator(creatorAddress));
       const poolData = await Promise.all(listOfPromisses)
       console.log(poolData)
-      return poolData.map((e) => { return { creatorName: e.name, poolValue: `${BigNumber.from(e.totalDeposits).add(e.totalYieldPaid).toString()} wei`, creatorAddress: e.cAddress } })
+      return poolData.map((e) => { return { creatorName: e.name, poolValue: `${BigNumber.from(e.totalDeposits).add(e.totalYieldPaid).toString()}`, creatorAddress: e.cAddress, maxWithdrawableForFan: e.maxWithdrawalAvailable  } })
     }
     catch (err) {
       console.log(err);
