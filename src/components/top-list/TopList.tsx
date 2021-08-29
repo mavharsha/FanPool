@@ -13,7 +13,7 @@ function TopList(props: Props) {
     const [topPools, setTopPools] = useState<Pool[]>([]);
 
     useEffect(() => {
-        setTopPools(props.creatorPools ? props.creatorPools.sort((a: any, b: any) => (a.poolValue > b.poolValue) ? -1 : -1).slice(0, 3) : []);
+        setTopPools(props.creatorPools ? props.creatorPools.sort((a: any, b: any) => (a.poolValue > b.poolValue) ? -1 : 1).slice(0, 3) : []);
     }, [props.account, props.creatorPools])
 
     return (<>

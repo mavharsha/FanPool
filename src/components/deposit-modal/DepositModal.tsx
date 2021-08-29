@@ -55,6 +55,7 @@ function DepositModal(props: Props) {
             setLoading((state) => !state);
             let transaction = await fanpoolContract.deposit(props.creatorAddress, compoundAddress, overrides);
             let receipt = await transaction.wait();
+            console.log(recievedReceipt)
             setRecievedReceipt(() => receipt);
             setLoading((state) => !state);
             

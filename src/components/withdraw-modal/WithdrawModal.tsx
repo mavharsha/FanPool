@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Contract, ethers } from 'ethers';
+import { Contract, ethers, BigNumber } from 'ethers';
 import {getContract} from '../../utils/common';
 import {address, compoundAddress} from '../../constants';
 import fanPool from '../../abis/Fanpool.json'
@@ -8,6 +8,7 @@ import {useState} from 'react';
 import Loader from '../loader';
 import {useEthers} from '@usedapp/core'
 import { useEffect } from 'react';
+
 
 interface Props {
   creator: string;
@@ -20,7 +21,9 @@ function WithdrawModal(props: Props) {
     const { account } = useEthers();
     const [accountType, setAccountType] = useState('Fan');
     const [recievedReceipt, setRecievedReceipt] = useState<any>({});
-  const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const value = BigNumber.from(props.maxFanCanWithdraw);
+
 
   const withDrawSchema = yup.object().shape({
     withdraw: yup.number().positive('Only positive numbers').required('Withdraw is required'),
@@ -45,12 +48,12 @@ function WithdrawModal(props: Props) {
             console.log('creator', props.creatorAddress, fanpoolContract)
             console.log('compound', compoundAddress)
             setLoading((state) => !state);
-            // Sree // Need some time to fix this.
             let transaction = await fanpoolContract.withdraw(props.creatorAddress, ethers.utils.parseEther(values.withdraw), compoundAddress);
             let receipt = await transaction.wait();
             setRecievedReceipt(() => receipt);
             console.log(recievedReceipt)
-            setTimeout(() => {setLoading((state) => !state);}, 50000)
+            setLoading((state) => !state);
+            props.onDismiss();
           } catch (err){
             console.log(err);
           }
@@ -71,8 +74,8 @@ function WithdrawModal(props: Props) {
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="sm:flex sm:items-start">
               <div className="mt-3 text-center  sm:mt-0 sm:ml-4 sm:text-left">
-                <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                    {accountType === 'Fan' ? `Withdrawing your eth from ${props.creator}'s pool: Max: ${props.maxFanCanWithdraw}` : `Withdrawing yeild for your pool`}
+                <h3 className="text-md leading-6 font-medium text-gray-900" id="modal-title">
+                    {accountType === 'Fan' ? `Withdrawing your from ${props.creator}'s pool: Max: ${ethers.utils.formatEther(value)} ETH` : `Withdrawing yeild for your pool`}
                 </h3>
                   {!loading && 
                     <form className="mt-8 p-2 space-y-6" onSubmit={formik.handleSubmit}>
