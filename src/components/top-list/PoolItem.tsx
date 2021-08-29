@@ -5,14 +5,16 @@ interface PoolItemProps {
     creatorName: string;
     poolValue: string;
     creatorAddress: string;
+    currentAddress: string
 }
 
 function PoolItem(props: PoolItemProps) {
     const [selectedPool, setSelectedPool] = useState('');
+    const randomNumber = Math.floor(Math.random() * 8) + 1
     return(
         <div className="bg-white mx-auto max-w-lg shadow-2xl rounded-lg overflow-hidden">
         <div className="sm:flex sm:items-center px-6 py-4">
-            <img className="block h-16 sm:h-24 rounded-full mx-auto mb-4 sm:mb-0 sm:mr-4 sm:ml-0" src='https://avatars.githubusercontent.com/u/10434952?v=4' alt="" />
+            <img className="block h-16 sm:h-24 rounded-full mx-auto mb-4 sm:mb-0 sm:mr-4 sm:ml-0" src={`https://randomuser.me/api/portraits/lego/${randomNumber}.jpg`} alt="" />
             <div className="text-center justify-center sm:text-left sm:flex-grow">
             <div className="mb-4">
                 <p className="text-xl leading-tight">{props.creatorName}</p>

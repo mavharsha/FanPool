@@ -1,5 +1,4 @@
 import { useFormik } from 'formik';
-import { useState } from 'react';
 import * as yup from 'yup';
 import { Contract, ethers } from 'ethers';
 import {getContract} from '../../utils/common';
@@ -13,7 +12,7 @@ interface Props {
 }
 
 function DepositModal(props: Props) {
-  const [recievedReceipt, setRecievedReceipt] = useState<any>({});
+  // const [recievedReceipt, setRecievedReceipt] = useState<any>({});
 
   const depositSchema = yup.object().shape({
     deposit: yup.number().positive('Only positive numbers').required('Deposit is required'),
@@ -52,7 +51,7 @@ function DepositModal(props: Props) {
             let transaction = await fanpoolContract.deposit(props.creatorAddress, compoundAddress, overrides);
             let receipt = await transaction.wait();
             console.log(receipt);
-            setRecievedReceipt(() => receipt);
+            // setRecievedReceipt(() => receipt);
           } catch (err){
             console.log(err);
           }

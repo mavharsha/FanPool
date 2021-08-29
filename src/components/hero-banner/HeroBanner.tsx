@@ -1,9 +1,16 @@
+import {useHistory} from 'react-router-dom';
+import {useCallback} from 'react';
+
 interface Props {
   message: string;
   title: string;
 }
 
 function HeroBanner(props: Props) {
+  const history = useHistory();
+  const poolHandleClick = useCallback(() => history.push('/pools'), [history]);
+  const onBoardHandleClick = useCallback(() => history.push('/onboard'), [history]);
+
   return (
     <>
       <div className="bg-gradient-to-b from-green-600 to-green-500 rounded-md mt-4">
@@ -14,12 +21,12 @@ function HeroBanner(props: Props) {
           </h2>
           <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
             <div className="inline-flex rounded-md shadow">
-              <button className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-900">
+              <button className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-900" onClick={onBoardHandleClick}>
                 OnBoard to FanPool
               </button>
             </div>
             <div className="ml-3 inline-flex rounded-md shadow">
-              <button className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-green-600 bg-gray-200 hover:bg-grey-700">
+              <button className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-green-600 bg-gray-200 hover:bg-grey-700" onClick={poolHandleClick}>
                 Creator Pools
               </button>
             </div>

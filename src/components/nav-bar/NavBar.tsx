@@ -1,11 +1,11 @@
 import Logo from "../logo";
 import WalletButton from "../wallet-button";
 
-interface Props {
-	selectedItem: string;
-	setSelectedItem: (value: string) => void;
-}
 
+interface Props {
+	account: string
+	onAccountAdded: (account: string) => void;
+}
 
 function NavBar(props: Props) {
 	/* 
@@ -20,16 +20,22 @@ function NavBar(props: Props) {
 				<div className="flex justify-between">
 					<div className="flex space-x-7">
 						<div>
-							<a href="/" className="flex items-center py-4 px-2">
+							<span className="flex items-center py-4 px-2" >
 								<Logo/>
-								<span className="font-semibold text-gray-500 text-2xl mr-2">FanPool</span>
+								<button className="font-semibold text-gray-500 text-2xl mr-2">FanPool</button>
 								<Logo/>
-							</a>
+							</span>
 						</div>
 
 					</div>
 					<div className="hidden md:flex items-center space-x-3 ">
-						<WalletButton />
+						<WalletButton account={props.account} onAccountAdded={ (account) => {console.log('account details', account); props.onAccountAdded(account)}} />
+						<div className="flex space-x-2">
+						<div className="relative w-12 h-12">
+							<img alt='alt' className="rounded-full border border-gray-800 shadow-sm" src="https://randomuser.me/api/portraits/lego/7.jpg" />
+						</div>
+						</div>
+						
 					</div>
 					<div className="md:hidden flex items-center">
 						<button className="outline-none mobile-menu-button">

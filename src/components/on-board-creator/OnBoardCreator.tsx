@@ -11,12 +11,16 @@ declare global {
   }
 }
 
-function OnBoardCreator() {
+interface Props {
+  account: string;
+}
+
+function OnBoardCreator(props: Props) {
   const [recievedReceipt, setRecievedReceipt] = useState<any>({});
 
   const onBoardUser = async (username: string, social: string) => {
     if (typeof window?.ethereum != undefined) {
-      const account = await requestAccount();
+      await requestAccount();
       const fanpoolContract: Contract = getContract(address, fanPool);
       try {
         let transaction = await fanpoolContract.onBoardCreator(username, social)
