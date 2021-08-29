@@ -55,7 +55,7 @@ function DepositModal(props: Props) {
             setLoading((state) => !state);
             let transaction = await fanpoolContract.deposit(props.creatorAddress, compoundAddress, overrides);
             let receipt = await transaction.wait();
-            console.log(recievedReceipt)
+            console.log(receipt)
             setRecievedReceipt(() => receipt);
             setLoading((state) => !state);
             
@@ -87,7 +87,7 @@ function DepositModal(props: Props) {
                     <form className="mt-8 p-2 space-y-6" onSubmit={formik.handleSubmit}>
                     <div className="rounded-md shadow-sm -space-y-px">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Quantity in eth.</label>
+                        <label className="block text-sm font-medium text-gray-700">Quantity(wei)</label>
                         <input id="deposit" name="deposit" type="text" onChange={formik.handleChange} value={formik.values.deposit} className="appearance-none relative block w-full mt-2 mb-2 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm" placeholder="Eth quantity" />
                         <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
                           {formik.errors.deposit}

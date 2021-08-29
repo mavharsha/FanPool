@@ -51,7 +51,7 @@ function WithdrawModal(props: Props) {
             let transaction = await fanpoolContract.withdraw(props.creatorAddress, ethers.utils.parseEther(values.withdraw), compoundAddress);
             let receipt = await transaction.wait();
             setRecievedReceipt(() => receipt);
-            console.log(recievedReceipt)
+            console.log(receipt)
             setLoading((state) => !state);
             props.onDismiss();
           } catch (err){
