@@ -5,6 +5,8 @@ import fanPool from "../../abis/Fanpool.json";
 import { requestAccount, getContract } from '../../utils/common';
 import {address} from '../../constants'
 import Loader from '../loader';
+import {useHistory} from 'react-router-dom';
+import {useCallback} from 'react';
 
 declare global {
   interface Window {
@@ -16,9 +18,15 @@ interface Props {
   account: string;
 }
 
+ 
+
 function OnBoardCreator(props: Props) {
   const [recievedReceipt, setRecievedReceipt] = useState<any>({});
   const [loading, setLoading] = useState(false);
+
+  const history = useHistory();
+  const goHome = useCallback(() => history.push('/'), [history]);
+
 
   const onBoardUser = async (username: string, social: string) => {
     if (typeof window?.ethereum != undefined) {
@@ -53,7 +61,7 @@ return (
   {loading && <Loader fullScreen={true}/>}
     <div className="min-h-screen flex justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-            <div className="font-bold text-white text-center opacity-70 text-xl">Creator! Welcome to FanPool!</div> 
+            <div className="font-bold text-white text-center opacity-70 text-xl" onClick={goHome}>Creator! Welcome to FanPool!</div> 
             <div className="font-light text-white text-center opacity-70 text-mg">Fill in the form to creator your own FANPOOL.</div>                  
 
         <form className="mt-8 space-y-6" onSubmit={formik.handleSubmit}>

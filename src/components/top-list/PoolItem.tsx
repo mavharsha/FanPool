@@ -27,16 +27,16 @@ function PoolItem(props: PoolItemProps) {
             <img className="block h-16 sm:h-24 rounded-full mx-auto mb-4 sm:mb-0 sm:mr-4 sm:ml-0" src={`https://randomuser.me/api/portraits/lego/${randomNumber}.jpg`} alt="" />
             <div className="text-center justify-center sm:text-left sm:flex-grow">
             <div className="mb-4">
-                <p className="text-xl leading-tight">{props.creatorName}</p>
-                <p className="text-sm leading-tight text-grey-dark">Pool value: {ethers.utils.formatEther(value)} ETH</p>
+                <p className="text-2xl mt-2 font-semibold leading-tight">{props.creatorName}</p>
+                <p className="text-md mt-2 font-medium leading-tight text-grey-dark">Pool value: {ethers.utils.formatEther(value)} ETH</p>
             </div>
             <div className="flex flex-row-reverse">
                 {
                     props.currentAddress && 
                     (
                     <>
-                        { props.withdrawable  && <button onClick={() => {setSelectedPool(props.creatorName); setModalType('withdraw')}} className="items-end text-xs font-semibold rounded-full px-4 py-1 leading-normal bg-white border border-purple text-purple hover:bg-green-500 hover:text-white">Withdraw</button> }
-                        { props.depositable &&  <button onClick={() => { setSelectedPool(props.creatorName); setModalType('deposit')}} className="items-end text-xs font-semibold rounded-full px-4 py-1 leading-normal bg-white border border-purple text-purple hover:bg-green-500 hover:text-white">Join pool</button> }
+                        { props.withdrawable  && <button onClick={() => {setSelectedPool(props.creatorName); setModalType('withdraw')}} className="items-end text-sm font-semibold rounded-full px-4 py-1 leading-normal bg-white border border-purple text-purple hover:bg-green-500 hover:text-white">Withdraw</button> }
+                        { props.depositable &&  <button onClick={() => { setSelectedPool(props.creatorName); setModalType('deposit')}} className="items-end text-sm font-semibold rounded-full px-4 py-1 leading-normal bg-white border border-purple text-purple hover:bg-green-500 hover:text-white">Join pool</button> }
                     </>
                     )              
                 }

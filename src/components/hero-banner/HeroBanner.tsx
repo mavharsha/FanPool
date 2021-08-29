@@ -27,7 +27,7 @@ function HeroBanner(props: Props) {
             </div>
             <div className="ml-3 inline-flex rounded-md shadow">
               <button className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-green-600 bg-gray-200 hover:bg-grey-700" onClick={poolHandleClick}>
-                Creator Pools
+                Explore creator pools
               </button>
             </div>
           </div>

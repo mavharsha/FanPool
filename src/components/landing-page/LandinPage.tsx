@@ -13,7 +13,7 @@ function LandingPage(props: Props) {
 
     return (
         <>
-        <HeroBanner title="Are you a creator? Click to onboard." message="Fans can support their favourite artists by staking their eth."/>
+        <HeroBanner title="Hey, are you a creator? Click to onboard." message="Fans can support their favourite artists by staking their eth."/>
         <TopList account={props.account} creatorPools={props.creatorPools} subscribedPools={props.subscribedPools} commonPools={props.commonPools}/>
         </>
     );
