@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DepositModal from "../deposit-modal";
 import WithdrawModal from "../withdraw-modal";
+import {ethers, BigNumber} from 'ethers';
 
 interface PoolItemProps {
     creatorName: string;
@@ -16,6 +17,7 @@ function PoolItem(props: PoolItemProps) {
     const [selectedPool, setSelectedPool] = useState('');
     const [modalType, setModalType] = useState('');
     const randomNumber = Math.floor(Math.random() * 8) + 1;
+     const value = BigNumber.from(props.poolValue);
 
 
 
@@ -26,7 +28,7 @@ function PoolItem(props: PoolItemProps) {
             <div className="text-center justify-center sm:text-left sm:flex-grow">
             <div className="mb-4">
                 <p className="text-xl leading-tight">{props.creatorName}</p>
-                <p className="text-sm leading-tight text-grey-dark">Pool value: {props.poolValue}</p>
+                <p className="text-sm leading-tight text-grey-dark">Pool value: {ethers.utils.formatEther(value)} ETH</p>
             </div>
             <div className="flex flex-row-reverse">
                 {
