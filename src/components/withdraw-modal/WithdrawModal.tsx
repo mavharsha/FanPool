@@ -6,6 +6,8 @@ import {address, compoundAddress} from '../../constants';
 import fanPool from '../../abis/Fanpool.json'
 import {useState} from 'react';
 import Loader from '../loader';
+import {useEthers} from '@usedapp/core'
+import { useEffect } from 'react';
 
 interface Props {
   creator: string;
@@ -14,12 +16,19 @@ interface Props {
 }
 
 function WithdrawModal(props: Props) {
-  //const [recievedReceipt, setRecievedReceipt] = useState<any>({});
+    const { account } = useEthers();
+    const [accountType, setAccountType] = useState('Fan');
+    //const [recievedReceipt, setRecievedReceipt] = useState<any>({});
   const [loading, setLoading] = useState(false);
 
   const withDrawSchema = yup.object().shape({
     withdraw: yup.number().positive('Only positive numbers').required('Withdraw is required'),
   });
+
+  useEffect(() => {
+    let accountType = props.creatorAddress === account ? 'Creator withdraw' : 'Fan withdraw';
+    setAccountType(accountType);
+  }, [account, accountType, props.creatorAddress]) 
 
   const formik = useFormik({
     initialValues: {
@@ -52,6 +61,7 @@ function WithdrawModal(props: Props) {
             setLoading((state) => !state);
             // Sree // Need some time to fix this.
             //let transaction = await fanpoolContract.deposit(props.creatorAddress, compoundAddress, overrides);
+            // withdraw()
             //let receipt = await transaction.wait();
             //setRecievedReceipt(() => receipt);
             setTimeout(() => {setLoading((state) => !state);}, 50000)
@@ -100,7 +110,7 @@ function WithdrawModal(props: Props) {
           </div>
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <button type="button" onClick={() => formik.handleSubmit()} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-              Withdraw
+              {accountType} Withdraw
             </button>
             <button type="button" onClick={props.onDismiss} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
               Cancel
