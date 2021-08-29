@@ -4,6 +4,7 @@ import { useState } from 'react';
 import fanPool from "../../abis/Fanpool.json";
 import { requestAccount, getContract } from '../../utils/common';
 import {address} from '../../constants'
+import Loader from '../loader';
 
 declare global {
   interface Window {
@@ -17,16 +18,19 @@ interface Props {
 
 function OnBoardCreator(props: Props) {
   const [recievedReceipt, setRecievedReceipt] = useState<any>({});
+  const [loading, setLoading] = useState(false);
 
   const onBoardUser = async (username: string, social: string) => {
     if (typeof window?.ethereum != undefined) {
       await requestAccount();
       const fanpoolContract: Contract = getContract(address, fanPool);
       try {
+        setLoading((state) => !state);
         let transaction = await fanpoolContract.onBoardCreator(username, social)
         let receipt = await transaction.wait();
-        console.log(receipt);
         setRecievedReceipt(() => receipt);
+        setLoading((state) => !state)
+        formik.resetForm()
       }
       catch (err) {
         console.log(err);
@@ -46,16 +50,20 @@ function OnBoardCreator(props: Props) {
 
 return (
   <>
+  {loading && <Loader fullScreen={true}/>}
     <div className="min-h-screen flex justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
+            <div className="font-bold text-white text-center opacity-70 text-xl">Creator! Welcome to FanPool!</div> 
+            <div className="font-light text-white text-center opacity-70 text-mg">Fill in the form to creator your own FANPOOL.</div>                  
+
         <form className="mt-8 space-y-6" onSubmit={formik.handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Name</label>
+              <label className="block text-sm font-medium text-white text-opacity-80">Name</label>
               <input id="name" name="name" type="text" onChange={formik.handleChange} value={formik.values.name} className="appearance-none relative block w-full mt-2 mb-2 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm" placeholder="Creator name" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Social</label>
+              <label className="block text-sm font-medium text-white text-opacity-80">Social</label>
               <input id="social" name="social" type="text" onChange={formik.handleChange} value={formik.values.social} className="appearance-none relative block w-full mt-2 mb-2 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm" placeholder="Creator social" />
             </div>
           </div>
@@ -63,17 +71,18 @@ return (
             <button type="submit" className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-900">
               Save
             </button>
-            <div className="text-white m-10">
-            Transaction details: 
-            <div>To: {recievedReceipt ? recievedReceipt?.to  : ''}</div>
-            <div>From: {recievedReceipt ? recievedReceipt?.from  : ''}</div>
-            <div>Hash: {recievedReceipt ? recievedReceipt?.transactionHash  : ''}</div>
+            <div className="text-grey-900 mt-10 bg-white bg-opacity-70 p-6 rounded-md w-fill">
+              <div className="font-bold items-center text-black text-opacity-70">Transaction details </div>
+            <div className="text-xs pt-2 pb-2 break-all">To: {recievedReceipt ? recievedReceipt?.to  : ''}</div>
+            <div className="text-xs pt-2 pb-2 break-all">From: {recievedReceipt ? recievedReceipt?.from  : ''}</div>
+            <div className="text-xs pt-2 pb-2 break-all">Hash: {recievedReceipt ? recievedReceipt?.transactionHash  : ''}</div>
             </div>
             
           </div>
         </form>
       </div>
     </div>
+    
   </>
 )
 }

@@ -19,9 +19,18 @@ function Profile(props: Props) {
       <>
         <div className="container mx-auto p-10">
           <div className="mx-auto text-center">
-            <span className="font-light text-white opacity-70 text-lg">List of Creators</span>
+            <span className="font-bold text-white opacity-70 text-xl">Supporting of Creators</span>
             <div>
-                    {subscribedPools.map(i =>                 
+
+                {subscribedPools && subscribedPools.length === 0 && (
+                  <>
+                    <span className="font-light text-white opacity-70 text-lg">You currently arn't supporting any creator.</span>                  
+                  </>
+                ) }
+
+                    {
+                    subscribedPools && 
+                    subscribedPools.map(i =>                 
                       <div  className="m-8" key={i.creatorName} >
                                   <PoolItem currentAddress={props.account} 
                                             creatorName={i.creatorName} 

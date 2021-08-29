@@ -13,11 +13,14 @@ function TopList(props: Props) {
     const [topPools, setTopPools] = useState<{creatorName: string, creatorAddress: string, poolValue: string}[]>([]);
 
     useEffect(() => {
-        setTopPools(props.creatorPools ? props.creatorPools.sort((a: any, b: any) => (a.poolValue > b.poolValue) ? 1 : -1).slice(0, 3) : []);
+        setTopPools(props.creatorPools ? props.creatorPools.sort((a: any, b: any) => (a.poolValue > b.poolValue) ? -1 : 1).slice(0, 3) : []);
     }, [props.account, props.creatorPools])
 
 
     return (<>
+       { 
+       props.account &&
+       (
         <div className="container mx-auto p-10">
         <div className="mx-auto text-center">
             <span className="font-normal text-white opacity-70 text-xl">Fanpool's Top Creators</span>
@@ -36,6 +39,9 @@ function TopList(props: Props) {
             }
         </div>
         </div>
+       )
+       
+       }
     </>)
 }
 export default TopList;

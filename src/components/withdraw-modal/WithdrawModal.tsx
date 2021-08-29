@@ -13,28 +13,26 @@ interface Props {
   onDismiss: () => void
 }
 
-function DepositModal(props: Props) {
-  // eslint-disable-next-line
-  const [recievedReceipt, setRecievedReceipt] = useState<any>({});
+function WithdrawModal(props: Props) {
+  //const [recievedReceipt, setRecievedReceipt] = useState<any>({});
   const [loading, setLoading] = useState(false);
 
-  const depositSchema = yup.object().shape({
-    deposit: yup.number().positive('Only positive numbers').required('Deposit is required'),
+  const withDrawSchema = yup.object().shape({
+    withdraw: yup.number().positive('Only positive numbers').required('Withdraw is required'),
   });
 
   const formik = useFormik({
     initialValues: {
-      deposit: '',
+      withdraw: '',
     },
-    validationSchema: depositSchema,
+    validationSchema: withDrawSchema,
     onSubmit: values => {
-      
-      const depositEth = async () => {
+      const withDrawEth = async () => {
         if (typeof window?.ethereum != undefined) {  
           const fanpoolContract: Contract = getContract(address, fanPool);
           let overrides = {
             // To convert Ether to Wei:
-            value: ethers.utils.parseEther(values.deposit)     // ether in this case MUST be a string
+            value: ethers.utils.parseEther(values.withdraw)     // ether in this case MUST be a string
         
             // Or you can use Wei directly if you have that:
             // value: someBigNumber
@@ -46,24 +44,23 @@ function DepositModal(props: Props) {
             // value: provider.getBalance(addr)
         };
 
-        console.log(overrides);
 
           try {
-            console.log('creator', props.creatorAddress, overrides)
+            console.log('creator', props.creatorAddress, overrides, fanpoolContract)
             console.log('compound', compoundAddress, overrides)
             console.log(overrides)
             setLoading((state) => !state);
-            let transaction = await fanpoolContract.deposit(props.creatorAddress, compoundAddress, overrides);
-            let receipt = await transaction.wait();
-            setRecievedReceipt(() => receipt);
-            setLoading((state) => !state);
-            
+            // Sree // Need some time to fix this.
+            //let transaction = await fanpoolContract.deposit(props.creatorAddress, compoundAddress, overrides);
+            //let receipt = await transaction.wait();
+            //setRecievedReceipt(() => receipt);
+            setTimeout(() => {setLoading((state) => !state);}, 50000)
           } catch (err){
             console.log(err);
           }
         }
       }
-      depositEth();
+      withDrawEth();
     },
   });
 
@@ -80,31 +77,30 @@ function DepositModal(props: Props) {
             <div className="sm:flex sm:items-start">
               <div className="mt-3 text-center  sm:mt-0 sm:ml-4 sm:text-left">
                 <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                  Deposit eth to {props.creator}
+                  Withdraw eth to {props.creator}
                 </h3>
                   {!loading && 
                     <form className="mt-8 p-2 space-y-6" onSubmit={formik.handleSubmit}>
                     <div className="rounded-md shadow-sm -space-y-px">
                       <div>
                         <label className="block text-sm font-medium text-gray-700">Quantity in eth.</label>
-                        <input id="deposit" name="deposit" type="text" onChange={formik.handleChange} value={formik.values.deposit} className="appearance-none relative block w-full mt-2 mb-2 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm" placeholder="Eth quantity" />
+                        <input id="withdraw" name="withdraw" type="text" onChange={formik.handleChange} value={formik.values.withdraw} className="appearance-none relative block w-full mt-2 mb-2 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm" placeholder="Eth quantity" />
                         <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
-                          {formik.errors.deposit}
+                          {formik.errors.withdraw}
                         </span>
                       </div>
                     </div>
                     <div>
                     </div>
                   </form>
-                  
                   }
-                  {loading && <div className="flex content-evenly"><Loader fullScreen={false}/></div>}
+                  {loading && <div className="flex"><div className="flex-1 justify-center"><Loader fullScreen={false}/></div></div>}
               </div>
             </div>
           </div>
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <button type="button" onClick={() => formik.handleSubmit()} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-              Deposit
+              Withdraw
             </button>
             <button type="button" onClick={props.onDismiss} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
               Cancel
@@ -117,4 +113,4 @@ function DepositModal(props: Props) {
   )
 }
 
-export default DepositModal;
+export default WithdrawModal;

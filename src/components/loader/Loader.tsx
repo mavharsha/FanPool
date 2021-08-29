@@ -10,9 +10,13 @@ const styles = {
     },
 }
 
-const Loader = () => {
+interface Props {
+    fullScreen: boolean;
+}
+
+const Loader = (props: Props) => {
     return (
-        <div className="flex justify-center items-center max-h-full">
+        <div className={`flex justify-center items-center ${props.fullScreen ? 'h-screen' : ''}`}>
             <div className="bg-white flex space-x-2 p-3 rounded-full justify-center items-center">
                 <div className="bg-blue-600 p-2 w-4 h-2 rounded-full animate-bounce " style={styles.blueCircle}></div>
                 <div className="bg-green-600 p-2 w-4 h-2 rounded-full animate-bounce " style={styles.greenCircle}></div>

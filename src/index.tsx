@@ -10,19 +10,25 @@ import {
 } from "react-router-dom";import OnBoardCreator from './components/on-board-creator';
 import CreatorList from './components/creator-list';
 import Profile from './components/profile';
+
 import {fetchAllPools, fetchSubscribedPools} from './api'
 import { Pool } from './interfaces';
+import {DAppProvider} from '@usedapp/core'
+import { useEthers } from '@usedapp/core'
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App/>
+    <DAppProvider config={{}}>
+      <App />
+    </DAppProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
 
 
 function App() {
-  const [account, setAccount] = useState('');
+  const { account } = useEthers();
   const [creatorPools, setCreatorPools] = useState<Pool[]>([]);
   const [subscribedPools, setSubscribedPools] = useState<Pool[]>([]);
   const [commonPools, setCommonPools] = useState<string[]>([]);
@@ -31,7 +37,7 @@ function App() {
   useEffect(() => {
       fetchAllPools().then(d => setCreatorPools(d as Pool[]));
       fetchSubscribedPools().then(d => setSubscribedPools(d as Pool[]));
-  }, []);
+  }, [account]);
 
 
   useEffect(()=> {
@@ -42,20 +48,20 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-800 to-green-400">
       <div className="container">
-        <NavBar account={account} onAccountAdded={ (account) => {console.log('account details', account); setAccount(account)} }/>
+        <NavBar account={account || ''} />
         <Router>
         <Switch>
           <Route path="/onboard">
-            <OnBoardCreator account={account}/>
+            <OnBoardCreator account={account || '' }/>
           </Route>
           <Route path="/pools">
-            <CreatorList account={account} creatorPools={creatorPools} subscribedPools={subscribedPools} commonPools={commonPools}/>
+            <CreatorList account={account || ''} creatorPools={creatorPools || []} subscribedPools={subscribedPools} commonPools={commonPools}/>
           </Route>
           <Route path="/profile">
-            <Profile account={account} subscribedPools={subscribedPools || []}/>
+            <Profile account={account || ''} subscribedPools={subscribedPools || []}/>
           </Route>
           <Route path="/">
-            <LandingPage account={account} creatorPools={creatorPools} subscribedPools={subscribedPools} commonPools={commonPools}/>
+            <LandingPage account={account || ''} creatorPools={creatorPools || []} subscribedPools={subscribedPools} commonPools={commonPools}/>
           </Route>
         </Switch>
         </Router>

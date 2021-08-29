@@ -1,5 +1,6 @@
 import { useState } from "react";
 import DepositModal from "../deposit-modal";
+import WithdrawModal from "../withdraw-modal";
 
 interface PoolItemProps {
     creatorName: string;
@@ -12,7 +13,10 @@ interface PoolItemProps {
 
 function PoolItem(props: PoolItemProps) {
     const [selectedPool, setSelectedPool] = useState('');
+    const [modalType, setModalType] = useState('');
     const randomNumber = Math.floor(Math.random() * 8) + 1;
+
+
 
     return(
         <div className="bg-white mx-auto max-w-md shadow-2xl rounded-lg overflow-hidden">
@@ -28,15 +32,21 @@ function PoolItem(props: PoolItemProps) {
                     props.currentAddress && 
                     (
                     <>
-                        { props.withdrawable  && <button onClick={() => setSelectedPool(props.creatorName)} className="items-end text-xs font-semibold rounded-full px-4 py-1 leading-normal bg-white border border-purple text-purple hover:bg-green-500 hover:text-white">Withdraw</button> }
-                        { props.depositable &&  <button onClick={() => setSelectedPool(props.creatorName)} className="items-end text-xs font-semibold rounded-full px-4 py-1 leading-normal bg-white border border-purple text-purple hover:bg-green-500 hover:text-white">Join pool</button> }
+                        { props.withdrawable  && <button onClick={() => {setSelectedPool(props.creatorName); setModalType('withdraw')}} className="items-end text-xs font-semibold rounded-full px-4 py-1 leading-normal bg-white border border-purple text-purple hover:bg-green-500 hover:text-white">Withdraw</button> }
+                        { props.depositable &&  <button onClick={() => { setSelectedPool(props.creatorName); setModalType('deposit')}} className="items-end text-xs font-semibold rounded-full px-4 py-1 leading-normal bg-white border border-purple text-purple hover:bg-green-500 hover:text-white">Join pool</button> }
                     </>
                     )              
                 }
            </div>
             </div>
         </div>
-        {selectedPool === props.creatorName && <DepositModal creator={props.creatorName} onDismiss={() => setSelectedPool('')} creatorAddress={props.creatorAddress}/>}
+        {selectedPool === props.creatorName 
+        && modalType === 'deposit'
+        && <DepositModal creator={props.creatorName} onDismiss={() =>{ setSelectedPool(''); setModalType('')}}creatorAddress={props.creatorAddress}/>}
+        {selectedPool === props.creatorName 
+        && modalType === 'withdraw'
+        && <WithdrawModal creator={props.creatorName} onDismiss={() => { setSelectedPool(''); setModalType('')}} creatorAddress={props.creatorAddress}/>}
+
         </div>
     );
 }

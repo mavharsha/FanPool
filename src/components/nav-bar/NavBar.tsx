@@ -4,7 +4,6 @@ import WalletButton from "../wallet-button";
 
 interface Props {
 	account: string
-	onAccountAdded: (account: string) => void;
 }
 
 function NavBar(props: Props) {
@@ -29,7 +28,7 @@ function NavBar(props: Props) {
 
 					</div>
 					<div className="hidden md:flex items-center space-x-3 ">
-						<WalletButton account={props.account} onAccountAdded={ (account) => {console.log('account details', account); props.onAccountAdded(account)}} />
+						<WalletButton account={props.account}  />
 						<div className="flex space-x-2">
 						<div className="relative w-12 h-12">
 							<img alt='alt' className="rounded-full border border-gray-800 shadow-sm" src="https://randomuser.me/api/portraits/lego/7.jpg" />

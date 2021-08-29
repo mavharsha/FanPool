@@ -11,6 +11,7 @@ export const fetchAllPools = async () => {
         console.log(listOfAllPools)
         const listOfPromisses = listOfAllPools.map((creatorAddress) => fanpoolContract.getPoolByCreator(creatorAddress));
         const poolData = await Promise.all(listOfPromisses)
+        console.log(poolData)
         return poolData.map((e) => { return { creatorName: e.name, poolValue: `${BigNumber.from(e.totalDeposits).add(e.totalYieldPaid).toString()} gwei`, creatorAddress: e.cAddress } })
       }
       catch (err) {
@@ -18,10 +19,6 @@ export const fetchAllPools = async () => {
       }
     }
 }
-
-// d = d.sort((a, b) => (a.poolValue > b.poolValue) ? 1 : -1).slice(0, 3);
-
-
 
 export const fetchSubscribedPools = async () => {
   if (typeof window?.ethereum != undefined) {
@@ -31,7 +28,8 @@ export const fetchSubscribedPools = async () => {
       console.log(subPools)
       const listOfPromisses = subPools.map((creatorAddress) => fanpoolContract.getPoolByCreator(creatorAddress));
       const poolData = await Promise.all(listOfPromisses)
-      return poolData.map((e) => { return { creatorName: e.name, poolValue: `${BigNumber.from(e.totalDeposits).add(e.totalYieldPaid).toString()} gwei`, creatorAddress: e.cAddress } })
+      console.log(poolData)
+      return poolData.map((e) => { return { creatorName: e.name, poolValue: `${BigNumber.from(e.totalDeposits).add(e.totalYieldPaid).toString()} wei`, creatorAddress: e.cAddress } })
     }
     catch (err) {
       console.log(err);
