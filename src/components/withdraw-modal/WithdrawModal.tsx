@@ -20,6 +20,7 @@ interface Props {
 function WithdrawModal(props: Props) {
     const { account } = useEthers();
     const [accountType, setAccountType] = useState('Fan');
+    // eslint-disable-next-line
     const [recievedReceipt, setRecievedReceipt] = useState<any>({});
     const [loading, setLoading] = useState(false);
     const value = BigNumber.from(props.maxFanCanWithdraw);
