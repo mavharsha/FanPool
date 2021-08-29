@@ -9,6 +9,7 @@ import {
   Route,
 } from "react-router-dom";import OnBoardCreator from './components/on-board-creator';
 import CreatorList from './components/creator-list';
+import Profile from './components/profile';
 import {fetchAllPools, fetchSubscribedPools} from './api'
 import { Pool } from './interfaces';
 
@@ -23,17 +24,20 @@ ReactDOM.render(
 function App() {
   const [account, setAccount] = useState('');
   const [creatorPools, setCreatorPools] = useState<Pool[]>([]);
-  const [subscribedPools, setSubscribedPools] = useState<Pool[]>([])
+  const [subscribedPools, setSubscribedPools] = useState<Pool[]>([]);
+  const [commonPools, setCommonPools] = useState<string[]>([]);
 
 
   useEffect(() => {
-    if(account !== '') {
       fetchAllPools().then(d => setCreatorPools(d as Pool[]));
       fetchSubscribedPools().then(d => setSubscribedPools(d as Pool[]));
-     }
-  }, [account]);
+  }, []);
 
 
+  useEffect(()=> {
+    const intersection = creatorPools ? creatorPools.filter(item1 => subscribedPools.some(item2 => item1.creatorAddress === item2.creatorAddress)).map(i => i.creatorAddress.toUpperCase()) : [];
+    setCommonPools(intersection);
+  }, [creatorPools, subscribedPools]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-800 to-green-400">
@@ -45,10 +49,13 @@ function App() {
             <OnBoardCreator account={account}/>
           </Route>
           <Route path="/pools">
-            <CreatorList account={account} creatorPools={creatorPools} subscribedPools={subscribedPools}/>
+            <CreatorList account={account} creatorPools={creatorPools} subscribedPools={subscribedPools} commonPools={commonPools}/>
+          </Route>
+          <Route path="/profile">
+            <Profile account={account} subscribedPools={subscribedPools || []}/>
           </Route>
           <Route path="/">
-            <LandingPage account={account} creatorPools={creatorPools} subscribedPools={subscribedPools}/>
+            <LandingPage account={account} creatorPools={creatorPools} subscribedPools={subscribedPools} commonPools={commonPools}/>
           </Route>
         </Switch>
         </Router>

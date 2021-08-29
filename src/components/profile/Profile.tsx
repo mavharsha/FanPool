@@ -6,15 +6,13 @@ import PoolItem from '../top-list/PoolItem'
 interface Props {
   account: string;
   subscribedPools: Pool[];
-  creatorPools: Pool[];
-  commonPools: string[];
 }
 
-function CreatorList(props: Props) {
-  const [creators, setCreators] = useState<{creatorName: string, creatorAddress: string, poolValue: string}[]>([]);
+function Profile(props: Props) {
+  const [subscribedPools, setSubscribedPools] = useState<Pool[]>([]);
 
   useEffect(() => {
-      setCreators(props.creatorPools)
+    setSubscribedPools(props.subscribedPools)
   }, [props])
 
   return (
@@ -23,14 +21,14 @@ function CreatorList(props: Props) {
           <div className="mx-auto text-center">
             <span className="font-light text-white opacity-70 text-lg">List of Creators</span>
             <div>
-                    {creators.map(i =>                 
+                    {subscribedPools.map(i =>                 
                       <div  className="m-8" key={i.creatorName} >
                                   <PoolItem currentAddress={props.account} 
                                             creatorName={i.creatorName} 
                                             poolValue={i.poolValue} 
                                             creatorAddress={i.creatorAddress} 
-                                            withdrawable={props.commonPools.includes(i.creatorAddress.toUpperCase())}
-                                            depositable={props.account.toLocaleUpperCase() !== i.creatorAddress.toUpperCase()}/>
+                                            withdrawable={true}
+                                            depositable={true}/>
 
                         </div>)
                     }
@@ -41,4 +39,4 @@ function CreatorList(props: Props) {
   )
 }
 
-export default CreatorList;
+export default Profile;

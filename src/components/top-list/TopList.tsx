@@ -6,16 +6,16 @@ interface Props {
   account: string;
   subscribedPools: Pool[];
   creatorPools: Pool[];
+  commonPools: string[];
 }
 
 function TopList(props: Props) {
     const [topPools, setTopPools] = useState<{creatorName: string, creatorAddress: string, poolValue: string}[]>([]);
 
     useEffect(() => {
-      if(props.account !== '') {
-        setTopPools(props.creatorPools.sort((a: any, b: any) => (a.poolValue > b.poolValue) ? 1 : -1).slice(0, 3))
-      }    
+        setTopPools(props.creatorPools ? props.creatorPools.sort((a: any, b: any) => (a.poolValue > b.poolValue) ? 1 : -1).slice(0, 3) : []);
     }, [props.account, props.creatorPools])
+
 
     return (<>
         <div className="container mx-auto p-10">
@@ -25,7 +25,13 @@ function TopList(props: Props) {
         <div>
             {topPools.map(i =>                 
                 <div  className="m-8" key={i.creatorName} >
-                    <PoolItem currentAddress={props.account} creatorName={i.creatorName} poolValue={i.poolValue} creatorAddress={i.creatorAddress}/>
+                            <PoolItem currentAddress={props.account} 
+                                      creatorName={i.creatorName} 
+                                      poolValue={i.poolValue} 
+                                      creatorAddress={i.creatorAddress} 
+                                      withdrawable={props.commonPools.includes(i.creatorAddress)}
+                                      depositable={props.account !== i.creatorAddress}/>
+
                 </div>)
             }
         </div>
