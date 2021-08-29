@@ -1,15 +1,22 @@
 import { useFormik } from 'formik';
+import { useState } from 'react';
 import * as yup from 'yup';
+import { Contract, ethers } from 'ethers';
+import {getContract} from '../../utils/common';
+import {address, compoundAddress} from '../../constants';
+import fanPool from '../../abis/Fanpool.json'
 
 interface Props {
   creator: string;
+  creatorAddress: string;
   onDismiss: () => void
 }
 
 function DepositModal(props: Props) {
+  const [recievedReceipt, setRecievedReceipt] = useState<any>({});
 
   const depositSchema = yup.object().shape({
-    deposit: yup.number().required('Required').positive('Only positive numbers'),
+    deposit: yup.number().positive('Only positive numbers').required('Deposit is required'),
   });
 
   const formik = useFormik({
@@ -18,10 +25,40 @@ function DepositModal(props: Props) {
     },
     validationSchema: depositSchema,
     onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
-      // handle on depositing to smart contract here
-      // value from for can be accessed by `values.deposit`
+      
+      const depositEth = async () => {
+        if (typeof window?.ethereum != undefined) {  
+          const fanpoolContract: Contract = getContract(address, fanPool);
+          let overrides = {
+            // To convert Ether to Wei:
+            value: ethers.utils.parseEther(values.deposit)     // ether in this case MUST be a string
+        
+            // Or you can use Wei directly if you have that:
+            // value: someBigNumber
+            // value: 1234   // Note that using JavaScript numbers requires they are less than Number.MAX_SAFE_INTEGER
+            // value: "1234567890"
+            // value: "0x1234"
+        
+            // Or, promises are also supported:
+            // value: provider.getBalance(addr)
+        };
 
+        console.log(overrides);
+
+          try {
+            console.log('creator', props.creatorAddress, overrides)
+            console.log('compound', compoundAddress, overrides)
+
+            let transaction = await fanpoolContract.deposit(props.creatorAddress, compoundAddress, overrides);
+            let receipt = await transaction.wait();
+            console.log(receipt);
+            setRecievedReceipt(() => receipt);
+          } catch (err){
+            console.log(err);
+          }
+        }
+      }
+      depositEth();
     },
   });
 
@@ -42,8 +79,11 @@ function DepositModal(props: Props) {
                   <form className="mt-8 p-2 space-y-6" onSubmit={formik.handleSubmit}>
                     <div className="rounded-md shadow-sm -space-y-px">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Quantity in eth. {formik.errors.deposit}</label>
+                        <label className="block text-sm font-medium text-gray-700">Quantity in eth.</label>
                         <input id="deposit" name="deposit" type="text" onChange={formik.handleChange} value={formik.values.deposit} className="appearance-none relative block w-full mt-2 mb-2 px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md sm:text-sm" placeholder="Eth quantity" />
+                        <span className="flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
+                          {formik.errors.deposit}
+                        </span>
                       </div>
                     </div>
                     <div>

@@ -1,20 +1,19 @@
 const hre = require("hardhat");
+const fs = require("fs");
 
 async function main() {
     const [deployer] = await hre.ethers.getSigners();
 
-    const SampleContract = await hre.ethers.getContractFactory("SampleContract");
-    const sampleContract = await SampleContract.deploy();
+    const FanPoolContract = await hre.ethers.getContractFactory("FanPool");
+    const fanpool = await FanPoolContract.deploy();
 
-    await sampleContract.deployed();
-    console.log("Sample Contract address:", sampleContract.address);
-
-    saveFrontendFiles(sampleContract);
-
+    await fanpool.deployed();
+    console.log("FanPool Contract address:", fanpool.address);
+    updateEnvWithDeployedAddress(fanpool.address);
+    saveFrontendFiles(fanpool);
 }
 
 function saveFrontendFiles(contract) {
-    const fs = require("fs");
     const contractsDir = __dirname + "/../src/abis";
 
     if (!fs.existsSync(contractsDir)) {
@@ -22,16 +21,38 @@ function saveFrontendFiles(contract) {
     }
 
     fs.writeFileSync(
-        contractsDir + "/contract-address.json",
-        JSON.stringify({ SampleContract: contract.address }, undefined, 2)
+        contractsDir + "/fan-pool-address.json",
+        JSON.stringify({ fanPool: contract.address }, undefined, 2)
     );
 
-    const SampleContractArtifact = artifacts.readArtifactSync("SampleContract");
+    const FanPoolArtifact = artifacts.readArtifactSync("FanPool");
 
     fs.writeFileSync(
-        contractsDir + "/SampleContract.json",
-        JSON.stringify(SampleContractArtifact, null, 2)
+        contractsDir + "/Fanpool.json",
+        JSON.stringify(FanPoolArtifact, null, 2)
     );
+}
+
+
+
+function updateEnvWithDeployedAddress(deployedAddress) {
+	const result = require('dotenv').config()
+	if (result.error) {
+		throw result.error
+	}
+	result.parsed.DEPLOYED_ADDRESS = deployedAddress;
+	fs.writeFileSync('./.env', stringify(result.parsed)) 
+}
+
+function stringify(obj) {
+	let result = ''
+	for (const [key, value] of Object.entries(obj)) {
+		if (key) {
+			const line = `${key}=${String(value)}`
+			result += line + '\n'
+		}
+	}
+	return result
 }
 
 main()
