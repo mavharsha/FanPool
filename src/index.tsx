@@ -48,8 +48,8 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-800 to-green-400">
       <div className="container">
-        <NavBar account={account || ''} />
         <Router>
+        <NavBar account={account || ''} />
         <Switch>
           <Route path="/onboard">
             <OnBoardCreator account={account || '' }/>

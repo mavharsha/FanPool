@@ -1,5 +1,7 @@
 import Logo from "../logo";
 import WalletButton from "../wallet-button";
+import {useHistory} from 'react-router-dom';
+import {useCallback} from 'react';
 
 
 interface Props {
@@ -12,13 +14,18 @@ function NavBar(props: Props) {
 	const inActiveItem = "py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300";
 	*/
 
+	const history = useHistory();
+	const handleProfileClick = useCallback(() => history.push('/profile'), [history]);
+	const handleHomeClick = useCallback(() => history.push('/home'), [history]);
+	const randomNumber = Math.floor(Math.random() * 8) + 1;
+
     return(
         <>
         	<nav className="bg-white shadow-lg rounded-b-md">
 			<div className="max-w-6xl mx-auto px-4">
 				<div className="flex justify-between">
 					<div className="flex space-x-7">
-						<div>
+						<div onClick={handleHomeClick}>
 							<span className="flex items-center py-4 px-2" >
 								<Logo/>
 								<button className="font-semibold text-gray-500 text-2xl mr-2">FanPool</button>
@@ -31,7 +38,7 @@ function NavBar(props: Props) {
 						<WalletButton account={props.account}  />
 						<div className="flex space-x-2">
 						<div className="relative w-12 h-12">
-							<img alt='alt' className="rounded-full border border-gray-800 shadow-sm" src="https://randomuser.me/api/portraits/lego/7.jpg" />
+							<img alt='alt' className="rounded-full border border-gray-800 shadow-sm" onClick={handleProfileClick} src={`https://randomuser.me/api/portraits/lego/${randomNumber}.jpg`} />
 						</div>
 						</div>
 						
